@@ -4,10 +4,6 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files
-*.jar
-*.zip
-
 # Gradle build directory
 .gradle/
 build/
@@ -32,6 +28,7 @@ Thumbs.db
 Desktop.ini
 
 # Others
+*.zip
 bin/
 _support/
 delme/
