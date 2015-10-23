@@ -103,7 +103,7 @@ public final class SerializableUnmodifiableHashMap<K extends Serializable, V ext
 
 
     @Override
-    public void putAll(final Map<? extends K, ? extends V> pM)
+    public void putAll(final Map<? extends K, ? extends V> pMap)
     {
         throw new UnsupportedOperationException();
     }

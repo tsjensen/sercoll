@@ -20,6 +20,7 @@ buildscript {
 plugins {
     id 'java';
     id 'idea';
+    id 'checkstyle';
 }
 
 repositories {
@@ -75,18 +76,18 @@ idea.module {
 }
 
 
-/*
+
 checkstyle {
     toolVersion = '6.1.1';
     configFile file('project/checkstyle.xml');
     configProperties 'projectDir': project.projectDir;
     showViolations = true;
-    ignoreFailures = true;
+    ignoreFailures = false;
 }
 tasks.withType(Checkstyle).each {
     it.setGroup(LifecycleBasePlugin.VERIFICATION_GROUP);
 }
-*/
+
 
 
 javadoc {
@@ -96,7 +97,7 @@ javadoc {
     options.encoding = 'UTF-8';
     options.docEncoding = 'UTF-8';
     options.charSet = 'UTF-8';
-    options.author = true;
+    options.author = false;
     options.use = true;
     options.windowTitle = project.name;
     options.splitIndex = false;

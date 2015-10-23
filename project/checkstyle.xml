@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+        "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <property name="severity" value="warning" />
+    <module name="TreeWalker">
+        <property name="tabWidth" value="4" />
+        <module name="JavadocMethod">
+            <property name="scope" value="public" />
+            <property name="allowUndeclaredRTE" value="true" />
+            <property name="allowThrowsTagsForSubclasses" value="true" />
+            <property name="allowMissingPropertyJavadoc" value="true" />
+        </module>
+        <module name="JavadocType" />
+        <module name="JavadocVariable">
+            <property name="scope" value="protected" />
+        </module>
+        <!-- Too many false positives due to bug introduced in 6.10.1
+        <module name="JavadocStyle">
+          <property name="checkEmptyJavadoc" value="true"/>
+          <property name="tokens" value="INTERFACE_DEF,CLASS_DEF,METHOD_DEF,CTOR_DEF"/>
+        </module> -->
+        <module name="ConstantName" />
+         <module name="LocalVariableName">
+            <property name="format" value="(?:^[a-z&amp;&amp;[^lo]]$)|(?:^(?:(?:[a-z&amp;&amp;[^ipsm]][A-Z])|(?:[a-z][a-z0-9]))[a-zA-Z0-9]{0,30}$)"/>
+            <message key="name.invalidPattern" value="''{0}'' is an invalid identifier. Shorter than 33 characters, start with lowercase letter, not ''o'' or ''l'', no misleading prefixes. The regex: {1}"/>
+        </module>
+        <module name="LocalFinalVariableName">
+            <property name="format" value="(?:^[a-z&amp;&amp;[^lo]]$)|(?:^(?:(?:[a-z&amp;&amp;[^ipsm]][A-Z])|(?:[a-z][a-z0-9]))[a-zA-Z0-9]{0,30}$)"/>
+            <message key="name.invalidPattern" value="''{0}'' is an invalid identifier. Shorter than 33 characters, start with lowercase letter, not ''o'' or ''l'', no misleading prefixes. The regex: {1}"/>
+        </module>
+        <module name="MemberName">
+            <property name="format" value="(?:^[a-z][a-z0-9][a-zA-Z0-9]{0,30}$)|(?:^[a-z&amp;&amp;[^lps]][A-Z][a-zA-Z0-9]{0,30}$)"/>
+            <message key="name.invalidPattern" value="''{0}'' is an invalid identifier. Length must be 2-32 characters, prefix must not be ''l'', ''p'', or ''s''. The regex: {1}"/>
+        </module>
+        <module name="MethodName" />
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(?:\.[a-z][a-z0-9]*)*$"/>
+            <message key="name.invalidPattern" value="''{0}'' is an invalid package name. Use only lowercase a-z and digits, begin each fragment with a letter. The regex: {1}"/>
+        </module>
+        <module name="ParameterName">
+            <property name="format" value="^p[A-Z][a-zA-Z0-9]{1,30}$"/>
+            <message key="name.invalidPattern" value="''{0}'' is an invalid identifier. 3-32 characters, prefix ''p'' required. The regex: {1}"/>
+        </module>
+        <module name="StaticVariableName">
+            <property name="format" value="^s[A-Z][a-zA-Z0-9]{0,30}$"/>
+            <message key="name.invalidPattern" value="''{0}'' is an invalid identifier. Shorter than 33 characters, prefix ''s'' required. The regex: {1}"/>
+        </module>
+        <module name="TypeName">
+            <property name="format" value="^(?:Serializable)?[A-Z][a-zA-Z0-9]{0,31}?(?:Exception)?$"/>
+            <message key="name.invalidPattern" value="''{0}'' is an invalid identifier. Use upper camel case, not longer than 32 characters (41 for exceptions). The regex: {1}"/>
+        </module>
+        <module name="AvoidStarImport" />
+        <module name="RedundantImport" />
+        <module name="LineLength">
+            <property name="severity" value="info" />
+            <property name="max" value="120" />
+            <property name="tabWidth" value="4" />
+        </module>
+        <module name="ModifierOrder" />
+        <module name="RedundantModifier" />
+        <module name="AvoidNestedBlocks">
+            <property name="allowInSwitchCase" value="true" />
+        </module>
+        <module name="EmptyBlock">
+            <property name="option" value="text" />
+        </module>
+        <module name="EmptyStatement" />
+        <module name="EqualsHashCode" />
+        <module name="HiddenField" />
+        <module name="IllegalInstantiation" />
+        <module name="InnerAssignment" />
+        <module name="MagicNumber">
+            <property name="ignoreHashCodeMethod" value="true" />
+            <property name="ignoreAnnotation" value="true" />
+        </module>
+        <module name="MissingSwitchDefault" />
+        <module name="SimplifyBooleanExpression" />
+        <module name="SimplifyBooleanReturn" />
+        <module name="FinalClass" />
+        <module name="HideUtilityClassConstructor" />
+        <module name="InterfaceIsType" />
+        <module name="VisibilityModifier" />
+        <module name="ArrayTypeStyle" />
+        <module name="FinalParameters" />
+        <module name="UpperEll" />
+        <module name="AvoidStaticImport" />
+        <module name="OneStatementPerLine" />
+        <module name="StringLiteralEquality" />
+        <module name="ParameterAssignment" />
+        <module name="NoFinalizer" />
+        <module name="FallThrough" />
+        <module name="EqualsAvoidNull" />
+        <module name="DefaultComesLast" />
+        <module name="IllegalImport" />
+        <module name="MethodTypeParameterName">
+            <property name="format" value="^[A-Z][0-9]?$"/>
+            <message key="name.invalidPattern" value="''{0}'' is an invalid identifier. Type parameters must be single uppercase letters, optionally followed by a single numeral. The regex: {1}"/>
+        </module>
+        <module name="MissingDeprecated" />
+        <module name="ClassTypeParameterName">
+            <property name="format" value="^[A-Z][0-9]?$"/>
+            <message key="name.invalidPattern" value="''{0}'' is an invalid identifier. Type parameters must be single uppercase letters, optionally followed by a single numeral. The regex: {1}"/>
+        </module>
+        <module name="InterfaceTypeParameterName">
+            <property name="format" value="^[A-Z][0-9]?$"/>
+            <message key="name.invalidPattern" value="''{0}'' is an invalid identifier. Type parameters must be single uppercase letters, optionally followed by a single numeral. The regex: {1}"/>
+        </module>
+        <module name="IllegalThrows" />
+        <module name="MissingOverride" />
+        <module name="PackageAnnotation" />
+        <module name="PackageDeclaration" />
+        <module name="ExecutableStatementCount">
+            <property name="severity" value="info" />
+            <property name="max" value="60" />
+            <property name="tokens" value="INSTANCE_INIT,METHOD_DEF,CTOR_DEF" />
+        </module>
+        <module name="CovariantEquals" />
+        <module name="MultipleVariableDeclarations" />
+        <module name="SuperClone" />
+        <module name="UnusedImports">
+            <property name="processJavadoc" value="true" />
+        </module>
+        <module name="MutableException" />
+    </module>
+    <module name="NewlineAtEndOfFile" />
+    <module name="Translation" />
+    <module name="FileLength">
+        <property name="max" value="1000" />
+    </module>
+    <module name="FileTabCharacter">
+        <property name="severity" value="info" />
+        <property name="eachLine" value="true" />
+    </module>
+    <module name="SuppressionFilter">
+        <property name="file" value="${projectDir}/project/suppressions.xml" />
+    </module>
+    <module name="JavadocPackage" />
+</module>
