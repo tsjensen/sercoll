@@ -20,5 +20,9 @@ package com.thomasjensen.sercoll.impl;
  */
 public enum TestEnum
 {
-    foo, bar;
+    /** foo value */
+    foo,
+
+    /** bar value */
+    bar;
 }

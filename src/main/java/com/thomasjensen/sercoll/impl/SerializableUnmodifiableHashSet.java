@@ -85,7 +85,7 @@ public final class SerializableUnmodifiableHashSet<E extends Serializable>
 
 
     @Override
-    public boolean add(final E pE)
+    public boolean add(final E pElement)
     {
         throw new UnsupportedOperationException();
     }
@@ -93,7 +93,7 @@ public final class SerializableUnmodifiableHashSet<E extends Serializable>
 
 
     @Override
-    public boolean remove(final Object pO)
+    public boolean remove(final Object pElement)
     {
         throw new UnsupportedOperationException();
     }
@@ -109,7 +109,7 @@ public final class SerializableUnmodifiableHashSet<E extends Serializable>
 
 
     @Override
-    public boolean removeAll(final Collection<?> pC)
+    public boolean removeAll(final Collection<?> pCollection)
     {
         throw new UnsupportedOperationException();
     }
@@ -117,7 +117,7 @@ public final class SerializableUnmodifiableHashSet<E extends Serializable>
 
 
     @Override
-    public boolean addAll(final Collection<? extends E> pC)
+    public boolean addAll(final Collection<? extends E> pCollection)
     {
         throw new UnsupportedOperationException();
     }
@@ -125,7 +125,7 @@ public final class SerializableUnmodifiableHashSet<E extends Serializable>
 
 
     @Override
-    public boolean retainAll(final Collection<?> pC)
+    public boolean retainAll(final Collection<?> pCollection)
     {
         throw new UnsupportedOperationException();
     }

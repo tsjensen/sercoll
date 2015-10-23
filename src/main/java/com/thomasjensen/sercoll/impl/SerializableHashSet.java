@@ -16,7 +16,6 @@ package com.thomasjensen.sercoll.impl;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.TreeSet;
 import javax.annotation.Nonnull;
 
 import com.thomasjensen.sercoll.SerializableSet;
