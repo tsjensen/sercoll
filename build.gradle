@@ -1,0 +1,115 @@
+/*
+ * sercoll - Java Collections declared Serializable
+ * Copyright (c) 2015 Thomas Jensen
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for
+ * the specific language governing permissions and limitations under the License.
+ */
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+}
+plugins {
+    id 'java';
+    id 'idea';
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+group = 'com.thomasjensen.sercoll';
+description = 'Java Collections declared Serializable';
+version = '0.0.1';
+
+ext {
+    buildTimestamp = new Date();
+}
+
+
+configurations {
+    providedCompile
+}
+dependencies {
+    providedCompile group: 'com.google.code.findbugs', name: 'annotations', version: '2.0.3';
+    providedCompile group: 'com.google.code.findbugs', name: 'jsr305', version: '2.0.3';
+    testCompile group: 'junit', name: 'junit', version: '4.11';
+    testCompile group: 'commons-io', name: 'commons-io', version: '2.4';
+}
+sourceSets.main.compileClasspath += configurations.providedCompile;
+sourceSets.main.runtimeClasspath += configurations.providedCompile;
+sourceSets.test.compileClasspath += configurations.providedCompile;
+sourceSets.test.runtimeClasspath += configurations.providedCompile;
+
+
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_6;
+    targetCompatibility = JavaVersion.VERSION_1_6;
+    options.encoding = 'UTF-8';
+    options.deprecation = true;
+}
+
+
+
+idea.project {
+    languageLevel = JavaVersion.VERSION_1_6;
+    // TODO set file encoding to UTF-8
+    // example: http://mrhaki.blogspot.de/2012/09/gradle-goodness-customize-idea-project.html
+}
+idea.module {
+    downloadSources = true;
+    downloadJavadoc = true;
+    excludeDirs += file('.idea');
+    excludeDirs += file('_support');
+    scopes.PROVIDED.plus += [configurations.providedCompile];
+}
+
+
+/*
+checkstyle {
+    toolVersion = '6.1.1';
+    configFile file('project/checkstyle.xml');
+    configProperties 'projectDir': project.projectDir;
+    showViolations = true;
+    ignoreFailures = true;
+}
+tasks.withType(Checkstyle).each {
+    it.setGroup(LifecycleBasePlugin.VERIFICATION_GROUP);
+}
+*/
+
+
+javadoc {
+    title = project.name + " v${project.version}";
+    classpath = sourceSets.main.compileClasspath;
+
+    options.encoding = 'UTF-8';
+    options.docEncoding = 'UTF-8';
+    options.charSet = 'UTF-8';
+    options.author = true;
+    options.use = true;
+    options.windowTitle = project.name;
+    options.splitIndex = false;
+    options.noDeprecated = true;
+    options.header = project.name + " v${project.version}";
+    options.links('https://jsr-305.googlecode.com/svn/trunk/javadoc/',
+            'http://docs.oracle.com/javase/6/docs/api/');
+
+    // javadoc does not inherit the proxy settings (https://issues.gradle.org/browse/GRADLE-1228)
+    if (System.properties['http.proxyHost'] != null) {
+        options.jFlags('-DproxyHost=' + System.properties['http.proxyHost'],
+            '-DproxyPort=' + System.properties['http.proxyPort'],
+            '-DproxyUser=' + System.properties['http.proxyUser'],
+            '-DproxyPassword=' + System.properties['http.proxyPassword']);
+    }
+}
