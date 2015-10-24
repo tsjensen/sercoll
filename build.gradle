@@ -1,3 +1,6 @@
+import org.gradle.internal.jvm.Jvm
+
+
 /*
  * sercoll - Java Collections declared Serializable
  * Copyright (c) 2015 Thomas Jensen
@@ -33,6 +36,9 @@ description = 'Java Collections declared Serializable';
 version = '0.0.1';
 
 ext {
+    vendorName = 'Thomas Jensen';
+    vendorId = 'com.thomasjensen';
+    website = 'https://github.com/tsjensen/sercoll';
     buildTimestamp = new Date();
 }
 
@@ -113,4 +119,79 @@ javadoc {
             '-DproxyUser=' + System.properties['http.proxyUser'],
             '-DproxyPassword=' + System.properties['http.proxyPassword']);
     }
+}
+
+
+
+jar {
+    manifest {
+        attributes = ['Manifest-Version'        : '1.0',
+                      'Specification-Title'     : project.name,
+                      'Specification-Vendor'    : project.ext.vendorName,
+                      'Specification-Vendor-Id' : project.ext.vendorId,
+                      'Specification-Version'   : project.version,
+                      'Implementation-Title'    : project.name,
+                      'Implementation-Vendor'   : project.ext.vendorName,
+                      'Implementation-Vendor-Id': project.ext.vendorId,
+                      'Implementation-Version'  : project.version,
+                      'Website'                 : project.ext.website,
+                      'Created-By'              : GradleVersion.current().toString(),
+                      'Built-By'                : System.getProperty('user.name'),
+                      'Build-Jdk'               : Jvm.current().toString(),
+        ];
+    }
+    doFirst {
+        // add build timestamp in execution phase so that it does not count for the up-to-date check
+        manifest {
+            attributes 'Build-Timestamp': project.ext.buildTimestamp.toString();
+        }
+    }
+}
+
+
+
+task jarSources(type: Jar) {
+    group = BasePlugin.BUILD_GROUP;
+    description = 'Assembles a jar archive containing the source files.';
+
+    from sourceSets.main.allJava;
+    into('META-INF') {
+        from 'LICENSE';
+    }
+    classifier = 'sources';
+
+    doFirst {
+        manifest = tasks.jar.manifest;
+        manifest {
+            attributes 'Build-Timestamp': project.ext.buildTimestamp.toString();
+        }
+    }
+}
+
+
+
+task jarJavadoc(type: Jar) {
+    group = BasePlugin.BUILD_GROUP;
+    description = 'Assembles a jar archive containing the Javadoc.';
+    dependsOn tasks.javadoc;
+
+    from tasks.javadoc.destinationDir;
+    into('META-INF') {
+        from 'LICENSE';
+    }
+    classifier = 'javadoc';
+
+    doFirst {
+        manifest = tasks.jar.manifest;
+        manifest {
+            attributes 'Build-Timestamp': project.ext.buildTimestamp.toString();
+        }
+    }
+}
+
+
+
+artifacts {
+    archives jarSources;
+    archives jarJavadoc;
 }
