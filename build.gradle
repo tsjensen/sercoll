@@ -22,7 +22,7 @@ plugins {
     id 'idea';
     id 'checkstyle';
     id 'maven-publish';
-    id 'com.jfrog.bintray' version '1.2';
+    id 'com.jfrog.bintray' version '1.4';
 }
 repositories {
     mavenLocal()
@@ -31,9 +31,6 @@ repositories {
 
 
 import org.gradle.internal.jvm.Jvm;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 
 /*
@@ -299,8 +296,7 @@ bintray {
             version {
                 name = project.version;  // Bintray logical version name
                 desc = project.description;
-                DateFormat sdf = new SimpleDateFormat('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
-                released = sdf.format(project.ext.buildTimestamp);
+                released = (Date) project.ext.buildTimestamp;
                 vcsTag = 'v' + project.version;
                 gpg {
                     sign = true;
