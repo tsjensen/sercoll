@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/tsjensen/sercoll.svg?branch=master)](https://travis-ci.org/tsjensen/sercoll)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.thomasjensen.sercoll/sercoll/badge.svg)](http://search.maven.org/#search%7Cgav%7C1%7Cg%3Acom.thomasjensen.sercoll)
 # sercoll
 **Java Collections declared Serializable**
 
