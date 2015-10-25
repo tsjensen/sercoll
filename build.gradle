@@ -1,6 +1,3 @@
-import org.gradle.internal.jvm.Jvm
-
-
 /*
  * sercoll - Java Collections declared Serializable
  * Copyright (c) 2015 Thomas Jensen
@@ -24,21 +21,32 @@ plugins {
     id 'java';
     id 'idea';
     id 'checkstyle';
+    id 'maven-publish';
+    id 'com.jfrog.bintray' version '1.2';
 }
-
 repositories {
     mavenLocal()
     jcenter()
 }
 
+
+import org.gradle.internal.jvm.Jvm;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+
 group = 'com.thomasjensen.sercoll';
 description = 'Java Collections declared Serializable';
-version = '0.0.1';
+version = '0.7.0';
 
 ext {
     vendorName = 'Thomas Jensen';
     vendorId = 'com.thomasjensen';
-    website = 'https://github.com/tsjensen/sercoll';
+    github = 'tsjensen/sercoll';
+    website = 'https://github.com/' + github;
+    email = 'sercoll@thomasjensen.com';
+    issueTrackerUrl = website + '/issues';
     buildTimestamp = new Date();
 }
 
@@ -124,6 +132,9 @@ javadoc {
 
 
 jar {
+    into('META-INF') {
+        from 'LICENSE';
+    }
     manifest {
         attributes = ['Manifest-Version'        : '1.0',
                       'Specification-Title'     : project.name,
@@ -195,3 +206,98 @@ artifacts {
     archives jarSources;
     archives jarJavadoc;
 }
+
+
+
+publishing {
+    repositories {
+        maven {
+            url "$buildDir/repo";
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact jarSources {
+                classifier 'sources';
+            }
+            artifact jarJavadoc {
+                classifier 'javadoc';
+            }
+            pom.withXml {
+                final Node rootNode = asNode();
+                rootNode.appendNode('description', project.description);
+                rootNode.appendNode('url', project.ext.website);
+                rootNode.appendNode('inceptionYear', '2015');
+
+                Node n = rootNode.appendNode('licenses').appendNode('license');
+                n.appendNode('name', 'Apache License 2.0');
+                n.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0');
+
+                n = rootNode.appendNode('developers').appendNode('developer');
+                n.appendNode('name', project.ext.vendorName);
+                n.appendNode('email', project.ext.email);
+
+                final String gh = 'git@github.com:' + (String) project.ext.github + '.git';
+                n = rootNode.appendNode('scm');
+                n.appendNode('connection', 'scm:git:' + gh);
+                n.appendNode('developerConnection', 'scm:git:' + gh);
+                n.appendNode('url', gh);
+            }
+        }
+    }
+}
+
+
+
+task checkProperties << {
+    ['bintray.user', 'bintray.apikey', 'bintray.gpg.passphrase', 'sonatype.user', 'sonatype.password'].each {
+        final String prp ->
+            if (!project.hasProperty(prp)) {
+                throw new GradleException("Could not find property \'${prp}\'. " +
+                    'Did you forget to specify it in ~/.gradle/gradle.properties?');
+            }
+    }
+}
+
+bintray {
+    if (project.hasProperty('bintray.user') && project.hasProperty('bintray.apikey')
+        && project.hasProperty('bintray.gpg.passphrase') && project.hasProperty('sonatype.user')
+        && project.hasProperty('sonatype.password'))
+    {
+        user = project.property('bintray.user');
+        key = project.property('bintray.apikey');
+
+        publications = ['mavenJava'];
+        publish = true;
+        dryRun = true;   // comment out for actual release deployment
+        pkg {
+            repo = 'maven';
+            //userOrg = 'checkstyle-addons';
+            name = project.name;
+            desc = project.description;
+            websiteUrl = project.ext.website;
+            issueTrackerUrl = project.ext.issueTrackerUrl;
+            vcsUrl = "https://github.com/${project.ext.github}.git";
+            licenses = ['Apache-2.0'];
+            publicDownloadNumbers = true;
+            version {
+                name = project.version;  // Bintray logical version name
+                desc = project.description;
+                DateFormat sdf = new SimpleDateFormat('yyyy-MM-dd\'T\'HH:mm:ss.SSSZ');
+                released = sdf.format(project.ext.buildTimestamp);
+                vcsTag = 'v' + project.version;
+                gpg {
+                    sign = true;
+                    passphrase = project.property('bintray.gpg.passphrase');
+                }
+                mavenCentralSync {
+                    sync = true;
+                    user = project.property('sonatype.user');
+                    password = project.property('sonatype.password');
+                }
+            }
+        }
+    }
+}
+tasks['bintrayUpload'].dependsOn('checkProperties');
