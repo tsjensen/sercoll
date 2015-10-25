@@ -10,9 +10,6 @@ before_install:
   - pwd
   - ./gradlew clean
 
-#after_success:
-#  - ./gradlew jacocoTestReport coveralls
-
 cache:
   directories:
   - ~/.gradle
