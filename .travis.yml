@@ -1,0 +1,22 @@
+language: java
+
+jdk:
+  - openjdk6
+
+sudo: false
+
+before_install:
+  - ls -a
+  - pwd
+  - ./gradlew clean
+
+#after_success:
+#  - ./gradlew jacocoTestReport coveralls
+
+cache:
+  directories:
+  - ~/.gradle
+
+branches:
+  only:
+  - master
