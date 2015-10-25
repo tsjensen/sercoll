@@ -41,7 +41,7 @@ import java.text.SimpleDateFormat;
  */
 group = 'com.thomasjensen.sercoll';
 description = 'Java Collections declared Serializable';
-version = '0.7.0';
+version = '0.7.1-SNAPSHOT';
 println 'Building version ' + project.version;
 
 ext {
@@ -286,7 +286,7 @@ bintray {
 
         publications = ['mavenJava'];
         publish = true;
-        //dryRun = true;   // comment out for actual release deployment
+        dryRun = true;   // comment out for actual release deployment
         pkg {
             repo = 'maven';
             name = project.name;
