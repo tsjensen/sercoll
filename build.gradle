@@ -36,9 +36,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 
+/*
+ * - - - - - - - - - - - - - - -  PROJECT METADATA  - - - - - - - - - - - - - - -
+ */
 group = 'com.thomasjensen.sercoll';
 description = 'Java Collections declared Serializable';
 version = '0.7.0';
+println 'Building version ' + project.version;
 
 ext {
     vendorName = 'Thomas Jensen';
@@ -51,6 +55,9 @@ ext {
 }
 
 
+/*
+ * - - - - - - - - - - - - - - -  COMPILATION  - - - - - - - - - - - - - - -
+ */
 configurations {
     providedCompile
 }
@@ -66,7 +73,6 @@ sourceSets.test.compileClasspath += configurations.providedCompile;
 sourceSets.test.runtimeClasspath += configurations.providedCompile;
 
 
-
 compileJava {
     sourceCompatibility = JavaVersion.VERSION_1_6;
     targetCompatibility = JavaVersion.VERSION_1_6;
@@ -75,7 +81,9 @@ compileJava {
 }
 
 
-
+/*
+ * - - - - - - - - - - - - - - -  INTELLIJ IDE CONFIG  - - - - - - - - - - - - - - -
+ */
 idea.project {
     languageLevel = JavaVersion.VERSION_1_6;
     // TODO set file encoding to UTF-8
@@ -91,6 +99,9 @@ idea.module {
 
 
 
+/*
+ * - - - - - - - - - - - - - - -  CHECKSTYLE  - - - - - - - - - - - - - - -
+ */
 checkstyle {
     toolVersion = '6.1.1';
     configFile file('project/checkstyle.xml');
@@ -104,6 +115,9 @@ tasks.withType(Checkstyle).each {
 
 
 
+/*
+ * - - - - - - - - - - - - - - -  JAVADOC  - - - - - - - - - - - - - - -
+ */
 javadoc {
     title = project.name + " v${project.version}";
     classpath = sourceSets.main.compileClasspath;
@@ -131,6 +145,9 @@ javadoc {
 
 
 
+/*
+ * - - - - - - - - - - - - - - -  ARTIFACTS  - - - - - - - - - - - - - - -
+ */
 jar {
     into('META-INF') {
         from 'LICENSE';
@@ -160,7 +177,6 @@ jar {
 }
 
 
-
 task jarSources(type: Jar) {
     group = BasePlugin.BUILD_GROUP;
     description = 'Assembles a jar archive containing the source files.';
@@ -178,7 +194,6 @@ task jarSources(type: Jar) {
         }
     }
 }
-
 
 
 task jarJavadoc(type: Jar) {
@@ -201,14 +216,15 @@ task jarJavadoc(type: Jar) {
 }
 
 
-
 artifacts {
     archives jarSources;
     archives jarJavadoc;
 }
 
 
-
+/*
+ * - - - - - - - - - - - - - - -  PUBLISHING  - - - - - - - - - - - - - - -
+ */
 publishing {
     repositories {
         maven {
@@ -226,6 +242,7 @@ publishing {
             }
             pom.withXml {
                 final Node rootNode = asNode();
+                rootNode.appendNode('name', project.name);
                 rootNode.appendNode('description', project.description);
                 rootNode.appendNode('url', project.ext.website);
                 rootNode.appendNode('inceptionYear', '2015');
@@ -249,7 +266,6 @@ publishing {
 }
 
 
-
 task checkProperties << {
     ['bintray.user', 'bintray.apikey', 'bintray.gpg.passphrase', 'sonatype.user', 'sonatype.password'].each {
         final String prp ->
@@ -270,10 +286,9 @@ bintray {
 
         publications = ['mavenJava'];
         publish = true;
-        dryRun = true;   // comment out for actual release deployment
+        //dryRun = true;   // comment out for actual release deployment
         pkg {
             repo = 'maven';
-            //userOrg = 'checkstyle-addons';
             name = project.name;
             desc = project.description;
             websiteUrl = project.ext.website;
