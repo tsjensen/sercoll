@@ -14,34 +14,35 @@ package com.thomasjensen.sercoll;
  */
 
 import java.io.Serializable;
-import java.util.SortedSet;
+import java.util.NavigableSet;
 
 
 /**
- * A serializable {@link SortedSet}. This means that the implementation of the set as well as its elements are declared
- * to be {@link java.io.Serializable}.
+ * A serializable {@link NavigableSet}. This means that the implementation of the set as well as its elements are
+ * declared to be {@link java.io.Serializable}.
  *
  * @param <E> value type
  * @author Thomas Jensen
  */
-public interface SerializableSortedSet<E extends Serializable>
-    extends SortedSet<E>, SerializableSet<E>
+public interface SerializableNavigableSet<E extends Serializable>
+    extends NavigableSet<E>, SerializableSortedSet<E>
 {
     @Override
-    SerializableComparator<? super E> comparator();
+    SerializableNavigableSet<E> descendingSet();
 
 
 
     @Override
-    SerializableSortedSet<E> subSet(final E pFromElement, final E pToElement);
+    SerializableNavigableSet<E> subSet(final E pFromElement, final boolean pFromInclusive, final E pToElement,
+        final boolean pToInclusive);
 
 
 
     @Override
-    SerializableSortedSet<E> headSet(final E pToElement);
+    SerializableNavigableSet<E> headSet(final E pToElement, final boolean pInclusive);
 
 
 
     @Override
-    SerializableSortedSet<E> tailSet(final E pFromElement);
+    SerializableNavigableSet<E> tailSet(final E pFromElement, final boolean pInclusive);
 }

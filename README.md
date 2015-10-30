@@ -29,6 +29,10 @@ public class MyObject implements Serializable {
 
 *Sercoll* requires at least JDK 6. It has no dependencies on other libraries.
 
+## Status
+
+This is work in progress. *Sercoll* is not yet complete (some classes are missing), and also poorly tested as yet. This notice will be updated once *sercoll* has stabilized sufficiently to be ready for production use.
+
 ## Integration
 
 *Sercoll* is distributed through [Maven Central](http://search.maven.org/#search|gav|1|g%3Acom.thomasjensen.sercoll), so you can just use it in your build. *Sercoll* uses [semantic versioning](http://semver.org/), so you can safely include the latest of a major version.

@@ -15,13 +15,12 @@ package com.thomasjensen.sercoll.impl;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.SortedSet;
 import java.util.TreeSet;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.thomasjensen.sercoll.SerializableComparator;
+import com.thomasjensen.sercoll.SerializableNavigableSet;
 import com.thomasjensen.sercoll.SerializableSortedSet;
 
 
@@ -33,7 +32,7 @@ import com.thomasjensen.sercoll.SerializableSortedSet;
  */
 public class SerializableTreeSet<E extends Serializable>
     extends TreeSet<E>
-    implements SerializableSortedSet<E>, Cloneable
+    implements SerializableNavigableSet<E>, Cloneable
 {
     /** serialVersionUID */
     private static final long serialVersionUID = 1L;
@@ -62,7 +61,8 @@ public class SerializableTreeSet<E extends Serializable>
      * e1.compareTo(e2)} must not throw a {@code ClassCastException} for any elements {@code e1} and {@code e2} in the
      * set.
      *
-     * @param pCollection collection whose elements will comprise the new set
+     * @param pCollection collection whose elements will comprise the new set. This collection does not need to be
+     * serializable, but its elements must be
      * @throws ClassCastException if the elements in {@code pCollection} are not {@link Comparable}, or are not mutually
      * comparable
      * @throws NullPointerException if the specified collection is null
@@ -95,10 +95,11 @@ public class SerializableTreeSet<E extends Serializable>
      * Constructs a new serializable tree set containing the same elements and using the same ordering as the specified
      * sorted set.
      *
-     * @param pSortedSet sorted set whose elements will comprise the new set
+     * @param pSortedSet sorted set whose elements will comprise the new set. Must be serializable, and have a
+     * serializable comparator, because the comparator will be used for this set also
      * @throws NullPointerException if the specified sorted set is null
      */
-    public SerializableTreeSet(@Nonnull final SortedSet<E> pSortedSet)
+    public SerializableTreeSet(@Nonnull final SerializableSortedSet<E> pSortedSet)
     {
         super(pSortedSet);
     }
@@ -111,5 +112,70 @@ public class SerializableTreeSet<E extends Serializable>
     public SerializableTreeSet<E> clone()
     {
         return (SerializableTreeSet<E>) super.clone();
+    }
+
+
+
+    @Override
+    public SerializableComparator<? super E> comparator()
+    {
+        return (SerializableComparator<? super E>) super.comparator();
+    }
+
+
+
+    @Override
+    public SerializableNavigableSet<E> descendingSet()
+    {
+        return new SerializableTreeSet<E>(super.descendingSet());
+    }
+
+
+
+    @Override
+    public SerializableNavigableSet<E> subSet(final E pFromElement, final boolean pFromInclusive, final E pToElement,
+        final boolean pToInclusive)
+    {
+        return new SerializableTreeSet<E>(super.subSet(pFromElement, pFromInclusive, pToElement, pToInclusive));
+    }
+
+
+
+    @Override
+    public SerializableNavigableSet<E> headSet(final E pToElement, final boolean pInclusive)
+    {
+        return new SerializableTreeSet<E>(super.headSet(pToElement, pInclusive));
+    }
+
+
+
+    @Override
+    public SerializableNavigableSet<E> tailSet(final E pFromElement, final boolean pInclusive)
+    {
+        return new SerializableTreeSet<E>(super.tailSet(pFromElement, pInclusive));
+    }
+
+
+
+    @Override
+    public SerializableSortedSet<E> subSet(final E pFromElement, final E pToElement)
+    {
+        return new SerializableTreeSet<E>(super.subSet(pFromElement, pToElement));
+    }
+
+
+
+    @Override
+    public SerializableSortedSet<E> headSet(final E pToElement)
+    {
+        return new SerializableTreeSet<E>(super.headSet(pToElement));
+    }
+
+
+
+    @Override
+    public SerializableSortedSet<E> tailSet(final E pFromElement)
+    {
+        return new SerializableTreeSet<E>(super.tailSet(pFromElement));
     }
 }

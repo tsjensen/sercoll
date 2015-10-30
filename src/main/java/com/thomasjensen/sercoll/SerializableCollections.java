@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -26,6 +27,7 @@ import com.thomasjensen.sercoll.impl.SerializableHashSet;
 import com.thomasjensen.sercoll.impl.SerializableUnmodifiableArrayList;
 import com.thomasjensen.sercoll.impl.SerializableUnmodifiableHashMap;
 import com.thomasjensen.sercoll.impl.SerializableUnmodifiableHashSet;
+import com.thomasjensen.sercoll.impl.SerializableUnmodifiableTreeSet;
 
 
 /**
@@ -48,7 +50,7 @@ public final class SerializableCollections
 
     /**
      * Creates a new list containing the specified elements. In contrast to  {@link java.util.Arrays#asList}, this
-     * method creates a serializable {@link ArrayList} which may subsequently be added to.
+     * method creates a serializable {@link java.util.ArrayList} which may subsequently be added to.
      *
      * @param <T> element type
      * @param pValues the values to be added to the list (<code>null</code> values allowed)
@@ -166,6 +168,28 @@ public final class SerializableCollections
 
 
     /**
+     * Returns an unmodifiable view of the specified sorted set. This method allows modules to provide users with
+     * "read-only" access to internal sorted sets. Query operations on the returned sorted set "read through" to the
+     * specified set, and attempts to modify the returned sorted set, whether direct, via its iterator, or via its
+     * <tt>subSet</tt>, <tt>headSet</tt>, or <tt>tailSet</tt> views, result in an {@link UnsupportedOperationException}.
+     * <p>The returned sorted set will always be serializable, as indicated by the return type.</p>
+     *
+     * @param <T> element type
+     * @param pSortedSet the sorted set for which an unmodifiable view is to be returned
+     * @return an unmodifiable view of the specified sorted set
+     *
+     * @see Collections#unmodifiableSortedSet(SortedSet)
+     */
+    @Nonnull
+    public static <T extends Serializable> SerializableSortedSet<T> unmodifiableSortedSet(
+        @Nonnull final SortedSet<T> pSortedSet)
+    {
+        return new SerializableUnmodifiableTreeSet<T>(pSortedSet);
+    }
+
+
+
+    /**
      * Returns an unmodifiable view of the specified list. This method allows modules to provide users with "read-only"
      * access to internal lists. Query operations on the returned list "read through" to the specified list, and
      * attempts to modify the returned list, whether direct or via its iterator, result in an {@link
@@ -207,8 +231,7 @@ public final class SerializableCollections
         return new SerializableUnmodifiableHashMap<K, V>(pMap);
     }
 
-    // TODO other methods: nCopies, 2x reverseOrder, unmodifiableCollection, unmodifiableSortedMap, unmodifiableSortedSet
-
+    // TODO other methods: nCopies, 2x reverseOrder, unmodifiableCollection, unmodifiableSortedMap
 
 
     /**

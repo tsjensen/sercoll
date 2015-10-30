@@ -35,4 +35,10 @@ public interface SerializableMap<K extends Serializable, V extends Serializable>
 
     @Override
     SerializableSet<K> keySet();
+
+
+    // Remark: Having a method SerializableSet<SerializableEntry<K, V>> entrySet() would be quite inefficient, because
+    // every entry would have to be converted into a serializable copy. Since we assume that entry sets are used for
+    // iteration rather then serialization, we skip this method. It could potentially be added later as a convenience
+    // method under a new name, for example serializableEntrySet().
 }

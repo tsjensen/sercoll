@@ -15,7 +15,6 @@ package com.thomasjensen.sercoll.impl;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -100,7 +99,7 @@ public class SerializableTreeMap<K extends Serializable, V extends Serializable>
      * sort this map
      * @throws NullPointerException if the specified map is null
      */
-    public SerializableTreeMap(@Nonnull final SortedMap<K, ? extends V> pMap)
+    public SerializableTreeMap(@Nonnull final SerializableSortedMap<K, ? extends V> pMap)
     {
         super(pMap);
     }
@@ -131,5 +130,37 @@ public class SerializableTreeMap<K extends Serializable, V extends Serializable>
     public SerializableCollection<V> values()
     {
         return new SerializableArrayList<V>(super.values());
+    }
+
+
+
+    @Override
+    public SerializableComparator<? super K> comparator()
+    {
+        return (SerializableComparator<? super K>) super.comparator();
+    }
+
+
+
+    @Override
+    public SerializableSortedMap<K, V> subMap(final K pFromKey, final K pToKey)
+    {
+        return new SerializableTreeMap<K, V>(super.subMap(pFromKey, pToKey));
+    }
+
+
+
+    @Override
+    public SerializableSortedMap<K, V> headMap(final K pToKey)
+    {
+        return new SerializableTreeMap<K, V>(super.headMap(pToKey));
+    }
+
+
+
+    @Override
+    public SerializableSortedMap<K, V> tailMap(final K pFromKey)
+    {
+        return new SerializableTreeMap<K, V>(super.tailMap(pFromKey));
     }
 }

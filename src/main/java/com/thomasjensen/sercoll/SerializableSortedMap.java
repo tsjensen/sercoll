@@ -28,5 +28,21 @@ import java.util.SortedMap;
 public interface SerializableSortedMap<K extends Serializable, V extends Serializable>
     extends SortedMap<K, V>, SerializableMap<K, V>
 {
-    // nothing added
+    @Override
+    SerializableComparator<? super K> comparator();
+
+
+
+    @Override
+    SerializableSortedMap<K, V> subMap(final K pFromKey, final K pToKey);
+
+
+
+    @Override
+    SerializableSortedMap<K, V> headMap(final K pToKey);
+
+
+
+    @Override
+    SerializableSortedMap<K, V> tailMap(final K pFromKey);
 }
