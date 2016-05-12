@@ -129,7 +129,7 @@ javadoc {
     options.splitIndex = false;
     options.noDeprecated = true;
     options.header = project.name + " v${project.version}";
-    options.links('https://jsr-305.googlecode.com/svn/trunk/javadoc/',
+    options.links('http://checkstyle-addons.github.io/jsr305-javadoc/3.0.1/',
             'http://docs.oracle.com/javase/6/docs/api/');
 
     // javadoc does not inherit the proxy settings (https://issues.gradle.org/browse/GRADLE-1228)
