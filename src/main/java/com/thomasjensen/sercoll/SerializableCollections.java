@@ -22,13 +22,6 @@ import java.util.SortedSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.thomasjensen.sercoll.impl.SerializableArrayList;
-import com.thomasjensen.sercoll.impl.SerializableHashSet;
-import com.thomasjensen.sercoll.impl.SerializableUnmodifiableArrayList;
-import com.thomasjensen.sercoll.impl.SerializableUnmodifiableHashMap;
-import com.thomasjensen.sercoll.impl.SerializableUnmodifiableHashSet;
-import com.thomasjensen.sercoll.impl.SerializableUnmodifiableTreeSet;
-
 
 /**
  * Helper class for serializable collections similar to {@link Collections}.

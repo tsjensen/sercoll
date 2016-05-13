@@ -14,9 +14,9 @@
  */
 
 /**
- * Serializable collection interfaces. These can be used as drop-in replacements for the classic collection interfaces
- * from <a href="http://docs.oracle.com/javase/6/docs/api/index.html?java/util/package-summary.html" target="_top"
- * ><code>java.util</code></a>. The difference is that these classes require that the elements of the collections are
+ * Serializable collections (and Maps). These can be used as drop-in replacements for the classic collection interfaces
+ * from <a href="http://docs.oracle.com/javase/6/docs/api/index.html?java/util/package-summary.html"></a>
+ * <code>java.util</code></a>. The difference is that these classes require that the elements of the collections are
  * also serializable.
  */
 package com.thomasjensen.sercoll;

@@ -1,4 +1,4 @@
-package com.thomasjensen.sercoll.impl;
+package com.thomasjensen.sercoll;
 /*
  * sercoll - Java Collections declared Serializable
  * Copyright (c) 2015 Thomas Jensen
@@ -18,10 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
-
-import com.thomasjensen.sercoll.SerializableCollection;
-import com.thomasjensen.sercoll.SerializableMap;
-import com.thomasjensen.sercoll.SerializableSet;
 
 
 /**

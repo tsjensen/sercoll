@@ -1,4 +1,4 @@
-package com.thomasjensen.sercoll.impl;
+package com.thomasjensen.sercoll;
 /*
  * sercoll - Java Collections declared Serializable
  * Copyright (c) 2015 Thomas Jensen
@@ -14,11 +14,11 @@ package com.thomasjensen.sercoll.impl;
  */
 
 import java.io.Serializable;
-import java.util.ListIterator;
+import java.util.Iterator;
 
 
 /**
- * Unmodifiable implementation of {@link ListIterator}.
+ * Unmodifiable implementation of {@link Iterator}.
  * <p/>
  * <b>Caution:</b> This class is <em>not</em> itself serializable, because it is not easily possible (and would not make
  * sense) to create serializable iterators.
@@ -26,21 +26,21 @@ import java.util.ListIterator;
  * @param <E> element type
  * @author Thomas Jensen
  */
-public final class UnmodifiableListIterator<E extends Serializable>
-    implements ListIterator<E>
+public final class UnmodifiableIterator<E extends Serializable>
+    implements Iterator<E>
 {
-    private final ListIterator<E> listIter;
+    private final Iterator<E> iter;
 
 
 
     /**
      * Constructor.
      *
-     * @param pIter a list iterator
+     * @param pIter something to iterate over
      */
-    public UnmodifiableListIterator(final ListIterator<E> pIter)
+    public UnmodifiableIterator(final Iterator<E> pIter)
     {
-        listIter = pIter;
+        iter = pIter;
     }
 
 
@@ -48,7 +48,7 @@ public final class UnmodifiableListIterator<E extends Serializable>
     @Override
     public boolean hasNext()
     {
-        return listIter.hasNext();
+        return iter.hasNext();
     }
 
 
@@ -56,61 +56,13 @@ public final class UnmodifiableListIterator<E extends Serializable>
     @Override
     public E next()
     {
-        return listIter.next();
-    }
-
-
-
-    @Override
-    public boolean hasPrevious()
-    {
-        return listIter.hasPrevious();
-    }
-
-
-
-    @Override
-    public E previous()
-    {
-        return listIter.previous();
-    }
-
-
-
-    @Override
-    public int nextIndex()
-    {
-        return listIter.nextIndex();
-    }
-
-
-
-    @Override
-    public int previousIndex()
-    {
-        return listIter.previousIndex();
+        return iter.next();
     }
 
 
 
     @Override
     public void remove()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-
-
-    @Override
-    public void set(final E pElement)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-
-
-    @Override
-    public void add(final E pElement)
     {
         throw new UnsupportedOperationException();
     }

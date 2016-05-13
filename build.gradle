@@ -22,7 +22,7 @@ plugins {
     id 'idea';
     id 'checkstyle';
     id 'maven-publish';
-    id 'com.jfrog.bintray' version '1.4';
+    id 'com.jfrog.bintray' version '1.6';
 }
 repositories {
     mavenLocal()
@@ -38,7 +38,7 @@ import org.gradle.internal.jvm.Jvm;
  */
 group = 'com.thomasjensen.sercoll';
 description = 'Java Collections declared Serializable';
-version = '0.7.1-SNAPSHOT';
+version = '1.0.0-SNAPSHOT';
 println 'Building version ' + project.version;
 
 ext {
@@ -292,6 +292,7 @@ bintray {
             websiteUrl = project.ext.website;
             issueTrackerUrl = project.ext.issueTrackerUrl;
             vcsUrl = "https://github.com/${project.ext.github}.git";
+            githubRepo = project.ext.github;
             licenses = ['Apache-2.0'];
             publicDownloadNumbers = true;
             version {

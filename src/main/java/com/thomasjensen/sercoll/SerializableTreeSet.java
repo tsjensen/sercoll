@@ -1,4 +1,4 @@
-package com.thomasjensen.sercoll.impl;
+package com.thomasjensen.sercoll;
 /*
  * sercoll - Java Collections declared Serializable
  * Copyright (c) 2015 Thomas Jensen
@@ -16,12 +16,9 @@ package com.thomasjensen.sercoll.impl;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.TreeSet;
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.thomasjensen.sercoll.SerializableComparator;
-import com.thomasjensen.sercoll.SerializableNavigableSet;
-import com.thomasjensen.sercoll.SerializableSortedSet;
 
 
 /**
@@ -84,6 +81,7 @@ public class SerializableTreeSet<E extends Serializable>
      * @param pComparator the comparator that will be used to order this set. If {@code null}, the {@linkplain
      * Comparable natural ordering} of the elements will be used.
      */
+    @SuppressWarnings("unused")
     public SerializableTreeSet(@Nullable final SerializableComparator<? super E> pComparator)
     {
         super(pComparator);
@@ -99,6 +97,7 @@ public class SerializableTreeSet<E extends Serializable>
      * serializable comparator, because the comparator will be used for this set also
      * @throws NullPointerException if the specified sorted set is null
      */
+    @SuppressWarnings("unused")
     public SerializableTreeSet(@Nonnull final SerializableSortedSet<E> pSortedSet)
     {
         super(pSortedSet);
@@ -108,7 +107,7 @@ public class SerializableTreeSet<E extends Serializable>
 
     @Override
     @Nonnull
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
     public SerializableTreeSet<E> clone()
     {
         return (SerializableTreeSet<E>) super.clone();
@@ -117,6 +116,8 @@ public class SerializableTreeSet<E extends Serializable>
 
 
     @Override
+    @CheckForNull
+    @SuppressWarnings("unchecked")
     public SerializableComparator<? super E> comparator()
     {
         return (SerializableComparator<? super E>) super.comparator();
@@ -125,6 +126,7 @@ public class SerializableTreeSet<E extends Serializable>
 
 
     @Override
+    @Nonnull
     public SerializableNavigableSet<E> descendingSet()
     {
         return new SerializableTreeSet<E>(super.descendingSet());
@@ -133,6 +135,7 @@ public class SerializableTreeSet<E extends Serializable>
 
 
     @Override
+    @Nonnull
     public SerializableNavigableSet<E> subSet(final E pFromElement, final boolean pFromInclusive, final E pToElement,
         final boolean pToInclusive)
     {
@@ -142,6 +145,7 @@ public class SerializableTreeSet<E extends Serializable>
 
 
     @Override
+    @Nonnull
     public SerializableNavigableSet<E> headSet(final E pToElement, final boolean pInclusive)
     {
         return new SerializableTreeSet<E>(super.headSet(pToElement, pInclusive));
@@ -150,6 +154,7 @@ public class SerializableTreeSet<E extends Serializable>
 
 
     @Override
+    @Nonnull
     public SerializableNavigableSet<E> tailSet(final E pFromElement, final boolean pInclusive)
     {
         return new SerializableTreeSet<E>(super.tailSet(pFromElement, pInclusive));
@@ -158,6 +163,7 @@ public class SerializableTreeSet<E extends Serializable>
 
 
     @Override
+    @Nonnull
     public SerializableSortedSet<E> subSet(final E pFromElement, final E pToElement)
     {
         return new SerializableTreeSet<E>(super.subSet(pFromElement, pToElement));
@@ -166,6 +172,7 @@ public class SerializableTreeSet<E extends Serializable>
 
 
     @Override
+    @Nonnull
     public SerializableSortedSet<E> headSet(final E pToElement)
     {
         return new SerializableTreeSet<E>(super.headSet(pToElement));
@@ -174,6 +181,7 @@ public class SerializableTreeSet<E extends Serializable>
 
 
     @Override
+    @Nonnull
     public SerializableSortedSet<E> tailSet(final E pFromElement)
     {
         return new SerializableTreeSet<E>(super.tailSet(pFromElement));

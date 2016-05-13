@@ -15,6 +15,7 @@ package com.thomasjensen.sercoll;
 
 import java.io.Serializable;
 import java.util.NavigableSet;
+import javax.annotation.Nonnull;
 
 
 /**
@@ -28,21 +29,25 @@ public interface SerializableNavigableSet<E extends Serializable>
     extends NavigableSet<E>, SerializableSortedSet<E>
 {
     @Override
+    @Nonnull
     SerializableNavigableSet<E> descendingSet();
 
 
 
     @Override
+    @Nonnull
     SerializableNavigableSet<E> subSet(final E pFromElement, final boolean pFromInclusive, final E pToElement,
         final boolean pToInclusive);
 
 
 
     @Override
+    @Nonnull
     SerializableNavigableSet<E> headSet(final E pToElement, final boolean pInclusive);
 
 
 
     @Override
+    @Nonnull
     SerializableNavigableSet<E> tailSet(final E pFromElement, final boolean pInclusive);
 }
