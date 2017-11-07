@@ -59,7 +59,9 @@
             <property name="tabWidth" value="4" />
         </module>
         <module name="ModifierOrder" />
-        <module name="RedundantModifier" />
+        <module name="RedundantModifier">
+            <property name="tokens" value="VARIABLE_DEF,ANNOTATION_FIELD_DEF,INTERFACE_DEF,CLASS_DEF,ENUM_DEF"/>
+        </module>
         <module name="AvoidNestedBlocks">
             <property name="allowInSwitchCase" value="true" />
         </module>

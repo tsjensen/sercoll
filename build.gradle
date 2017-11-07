@@ -13,24 +13,23 @@
  */
 buildscript {
     repositories {
-        mavenLocal()
         jcenter()
     }
 }
 plugins {
-    id 'java';
+    id 'java-library';
     id 'idea';
     id 'checkstyle';
     id 'maven-publish';
-    id 'com.jfrog.bintray' version '1.6';
+    id 'com.jfrog.bintray' version '1.8.0';
 }
 repositories {
-    mavenLocal()
     jcenter()
 }
 
 
 import org.gradle.internal.jvm.Jvm;
+import org.gradle.util.GradleVersion;
 
 
 /*
@@ -46,7 +45,7 @@ ext {
     vendorId = 'com.thomasjensen';
     github = 'tsjensen/sercoll';
     website = 'https://github.com/' + github;
-    email = 'sercoll@thomasjensen.com';
+    email = 'oss@thomasjensen.com';
     issueTrackerUrl = website + '/issues';
     buildTimestamp = new Date();
 }
@@ -55,29 +54,28 @@ ext {
 /*
  * - - - - - - - - - - - - - - -  COMPILATION  - - - - - - - - - - - - - - -
  */
-configurations {
-    providedCompile
-}
 dependencies {
-    providedCompile group: 'com.google.code.findbugs', name: 'annotations', version: '2.0.3';
-    providedCompile group: 'com.google.code.findbugs', name: 'jsr305', version: '2.0.3';
-    testCompile group: 'junit', name: 'junit', version: '4.11';
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '1.+';
-    testCompile group: 'commons-io', name: 'commons-io', version: '2.4';
+    compileOnly group: 'com.google.code.findbugs', name: 'annotations', version: '2.0.3';
+    compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '2.0.3';
+    testImplementation group: 'junit', name: 'junit', version: '4.11';
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '1.+';
+    testImplementation group: 'commons-io', name: 'commons-io', version: '2.4';
 }
-sourceSets.main.compileClasspath += configurations.providedCompile;
-sourceSets.main.runtimeClasspath += configurations.providedCompile;
-sourceSets.test.compileClasspath += configurations.providedCompile;
-sourceSets.test.runtimeClasspath += configurations.providedCompile;
 
 
-compileJava {
+tasks.withType(JavaCompile) {
     sourceCompatibility = JavaVersion.VERSION_1_6;
     targetCompatibility = JavaVersion.VERSION_1_6;
     options.encoding = 'UTF-8';
     options.deprecation = true;
+    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation';
+    options.fork = true;
+    options.forkOptions.executable = readPropertyValue('sercoll_jdk6_javac');
 }
 
+test {
+    executable = readPropertyValue('sercoll_jdk6_java');
+}
 
 /*
  * - - - - - - - - - - - - - - -  INTELLIJ IDE CONFIG  - - - - - - - - - - - - - - -
@@ -92,7 +90,6 @@ idea.module {
     downloadJavadoc = true;
     excludeDirs += file('.idea');
     excludeDirs += file('_support');
-    scopes.PROVIDED.plus += [configurations.providedCompile];
 }
 
 
@@ -101,7 +98,7 @@ idea.module {
  * - - - - - - - - - - - - - - -  CHECKSTYLE  - - - - - - - - - - - - - - -
  */
 checkstyle {
-    toolVersion = '6.1.1';
+    toolVersion = '8.4';
     configFile file('project/checkstyle.xml');
     configProperties 'projectDir': project.projectDir;
     showViolations = true;
@@ -119,6 +116,7 @@ tasks.withType(Checkstyle).each {
 javadoc {
     title = project.name + " v${project.version}";
     classpath = sourceSets.main.compileClasspath;
+    executable = readPropertyValue('sercoll_jdk6_javadoc');
 
     options.encoding = 'UTF-8';
     options.docEncoding = 'UTF-8';
@@ -264,13 +262,27 @@ publishing {
 }
 
 
-task checkProperties << {
-    ['bintray.user', 'bintray.apikey', 'bintray.gpg.passphrase', 'sonatype.user', 'sonatype.password'].each {
-        final String prp ->
-            if (!project.hasProperty(prp)) {
-                throw new GradleException("Could not find property \'${prp}\'. " +
-                    'Did you forget to specify it in ~/.gradle/gradle.properties?');
-            }
+private String readPropertyValue(final String pPropName) {
+    String result = System.getenv(pPropName);
+    if (project.hasProperty(pPropName)) {
+        result = (String) project.property(pPropName);
+    }
+    if (result == null) {
+        throw new GradleException("Required system or project property not found: " + pPropName);
+    }
+    return result;
+}
+
+
+task checkPublishProperties {
+    doLast {
+        ['bintray.user', 'bintray.apikey', 'bintray.gpg.passphrase', 'sonatype.user', 'sonatype.password'].each {
+            final String prp ->
+                if (!project.hasProperty(prp)) {
+                    throw new GradleException("Could not find property \'${prp}\'. " +
+                        'Did you forget to specify it in ~/.gradle/gradle.properties?');
+                }
+        }
     }
 }
 
@@ -313,4 +325,4 @@ bintray {
         }
     }
 }
-tasks['bintrayUpload'].dependsOn('checkProperties');
+tasks['bintrayUpload'].dependsOn('checkPublishProperties');
