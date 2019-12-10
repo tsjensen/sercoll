@@ -267,6 +267,7 @@ public final class SerializableUnmodifiableTreeSet<E extends Serializable>
 
 
     @Override
+    @SuppressWarnings("unchecked")
     public SerializableComparator<? super E> comparator()
     {
         return (SerializableComparator<? super E>) super.comparator();

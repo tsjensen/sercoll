@@ -130,6 +130,7 @@ public class SerializableTreeMap<K extends Serializable, V extends Serializable>
 
 
     @Override
+    @SuppressWarnings("unchecked")
     public SerializableComparator<? super K> comparator()
     {
         return (SerializableComparator<? super K>) super.comparator();

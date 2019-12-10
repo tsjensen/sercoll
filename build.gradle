@@ -17,37 +17,37 @@ buildscript {
     }
 }
 plugins {
-    id 'java-library';
-    id 'idea';
-    id 'checkstyle';
-    id 'maven-publish';
-    id 'com.jfrog.bintray' version '1.8.0';
+    id 'java-library'
+    id 'idea'
+    id 'checkstyle'
+    id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.8.0'
 }
 repositories {
     jcenter()
 }
 
 
-import org.gradle.internal.jvm.Jvm;
-import org.gradle.util.GradleVersion;
+import org.gradle.internal.jvm.Jvm
+import org.gradle.util.GradleVersion
 
 
 /*
  * - - - - - - - - - - - - - - -  PROJECT METADATA  - - - - - - - - - - - - - - -
  */
-group = 'com.thomasjensen.sercoll';
-description = 'Java Collections declared Serializable';
-version = '1.0.0-SNAPSHOT';
-println 'Building version ' + project.version;
+group = 'com.thomasjensen.sercoll'
+description = 'Java Collections declared Serializable'
+version = '1.0.0-SNAPSHOT'
+println 'Building version ' + project.version
 
 ext {
-    vendorName = 'Thomas Jensen';
-    vendorId = 'com.thomasjensen';
-    github = 'tsjensen/sercoll';
-    website = 'https://github.com/' + github;
-    email = 'oss@thomasjensen.com';
-    issueTrackerUrl = website + '/issues';
-    buildTimestamp = new Date();
+    vendorName = 'Thomas Jensen'
+    vendorId = 'com.thomasjensen'
+    github = 'tsjensen/sercoll'
+    website = 'https://github.com/' + github
+    email = 'oss@thomasjensen.com'
+    issueTrackerUrl = website + '/issues'
+    buildTimestamp = new Date()
 }
 
 
@@ -55,41 +55,44 @@ ext {
  * - - - - - - - - - - - - - - -  COMPILATION  - - - - - - - - - - - - - - -
  */
 dependencies {
-    compileOnly group: 'com.google.code.findbugs', name: 'annotations', version: '2.0.3';
-    compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '2.0.3';
-    testImplementation group: 'junit', name: 'junit', version: '4.11';
-    testImplementation group: 'org.assertj', name: 'assertj-core', version: '1.+';
-    testImplementation group: 'commons-io', name: 'commons-io', version: '2.4';
+    compileOnly group: 'com.google.code.findbugs', name: 'annotations', version: '2.0.3'
+    compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '2.0.3'
+
+    testCompileOnly group: 'com.google.code.findbugs', name: 'annotations', version: '2.0.3'
+    testCompileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '2.0.3'
+    testImplementation group: 'junit', name: 'junit', version: '4.11'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '1.+'
+    testImplementation group: 'commons-io', name: 'commons-io', version: '2.4'
 }
 
 
 tasks.withType(JavaCompile) {
-    sourceCompatibility = JavaVersion.VERSION_1_6;
-    targetCompatibility = JavaVersion.VERSION_1_6;
-    options.encoding = 'UTF-8';
-    options.deprecation = true;
-    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation';
-    options.fork = true;
-    options.forkOptions.executable = readPropertyValue('sercoll_jdk6_javac');
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    targetCompatibility = JavaVersion.VERSION_1_6
+    options.encoding = 'UTF-8'
+    options.deprecation = true
+    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
+    options.fork = true
+    options.forkOptions.executable = readPropertyValue('sercoll_jdk6_javac')
 }
 
 test {
-    executable = readPropertyValue('sercoll_jdk6_java');
+    executable = readPropertyValue('sercoll_jdk6_java')
 }
 
 /*
  * - - - - - - - - - - - - - - -  INTELLIJ IDE CONFIG  - - - - - - - - - - - - - - -
  */
 idea.project {
-    languageLevel = JavaVersion.VERSION_1_6;
+    languageLevel = JavaVersion.VERSION_1_6
     // TODO set file encoding to UTF-8
     // example: http://mrhaki.blogspot.de/2012/09/gradle-goodness-customize-idea-project.html
 }
 idea.module {
-    downloadSources = true;
-    downloadJavadoc = true;
-    excludeDirs += file('.idea');
-    excludeDirs += file('_support');
+    downloadSources = true
+    downloadJavadoc = true
+    excludeDirs += file('.idea')
+    excludeDirs += file('_support')
 }
 
 
@@ -98,14 +101,14 @@ idea.module {
  * - - - - - - - - - - - - - - -  CHECKSTYLE  - - - - - - - - - - - - - - -
  */
 checkstyle {
-    toolVersion = '8.4';
-    configFile file('project/checkstyle.xml');
-    configProperties 'projectDir': project.projectDir;
-    showViolations = true;
-    ignoreFailures = false;
+    toolVersion = '8.4'
+    configFile file('project/checkstyle.xml')
+    configProperties 'projectDir': project.projectDir
+    showViolations = true
+    ignoreFailures = false
 }
 tasks.withType(Checkstyle).each {
-    it.setGroup(LifecycleBasePlugin.VERIFICATION_GROUP);
+    it.setGroup(LifecycleBasePlugin.VERIFICATION_GROUP)
 }
 
 
@@ -114,28 +117,28 @@ tasks.withType(Checkstyle).each {
  * - - - - - - - - - - - - - - -  JAVADOC  - - - - - - - - - - - - - - -
  */
 javadoc {
-    title = project.name + " v${project.version}";
-    classpath = sourceSets.main.compileClasspath;
-    executable = readPropertyValue('sercoll_jdk6_javadoc');
+    title = project.name + " v${project.version}"
+    classpath = sourceSets.main.compileClasspath
+    executable = readPropertyValue('sercoll_jdk6_javadoc')
 
-    options.encoding = 'UTF-8';
-    options.docEncoding = 'UTF-8';
-    options.charSet = 'UTF-8';
-    options.author = false;
-    options.use = true;
-    options.windowTitle = project.name;
-    options.splitIndex = false;
-    options.noDeprecated = true;
-    options.header = project.name + " v${project.version}";
+    options.encoding = 'UTF-8'
+    options.docEncoding = 'UTF-8'
+    options.charSet = 'UTF-8'
+    options.author = false
+    options.use = true
+    options.windowTitle = project.name
+    options.splitIndex = false
+    options.noDeprecated = true
+    options.header = project.name + " v${project.version}"
     options.links('http://checkstyle-addons.github.io/jsr305-javadoc/3.0.1/',
-            'http://docs.oracle.com/javase/6/docs/api/');
+            'http://docs.oracle.com/javase/6/docs/api/')
 
     // javadoc does not inherit the proxy settings (https://issues.gradle.org/browse/GRADLE-1228)
     if (System.properties['http.proxyHost'] != null) {
         options.jFlags('-DproxyHost=' + System.properties['http.proxyHost'],
             '-DproxyPort=' + System.properties['http.proxyPort'],
             '-DproxyUser=' + System.properties['http.proxyUser'],
-            '-DproxyPassword=' + System.properties['http.proxyPassword']);
+            '-DproxyPassword=' + System.properties['http.proxyPassword'])
     }
 }
 
@@ -146,7 +149,7 @@ javadoc {
  */
 jar {
     into('META-INF') {
-        from 'LICENSE';
+        from 'LICENSE'
     }
     manifest {
         attributes = ['Manifest-Version'        : '1.0',
@@ -162,59 +165,59 @@ jar {
                       'Created-By'              : GradleVersion.current().toString(),
                       'Built-By'                : System.getProperty('user.name'),
                       'Build-Jdk'               : Jvm.current().toString(),
-        ];
+        ]
     }
     doFirst {
         // add build timestamp in execution phase so that it does not count for the up-to-date check
         manifest {
-            attributes 'Build-Timestamp': project.ext.buildTimestamp.toString();
+            attributes 'Build-Timestamp': project.ext.buildTimestamp.toString()
         }
     }
 }
 
 
 task jarSources(type: Jar) {
-    group = BasePlugin.BUILD_GROUP;
-    description = 'Assembles a jar archive containing the source files.';
+    group = BasePlugin.BUILD_GROUP
+    description = 'Assembles a jar archive containing the source files.'
 
-    from sourceSets.main.allJava;
+    from sourceSets.main.allJava
     into('META-INF') {
-        from 'LICENSE';
+        from 'LICENSE'
     }
-    classifier = 'sources';
+    archiveClassifier.set('sources')
 
     doFirst {
-        manifest = tasks.jar.manifest;
+        manifest = tasks.jar.manifest
         manifest {
-            attributes 'Build-Timestamp': project.ext.buildTimestamp.toString();
+            attributes 'Build-Timestamp': project.ext.buildTimestamp.toString()
         }
     }
 }
 
 
 task jarJavadoc(type: Jar) {
-    group = BasePlugin.BUILD_GROUP;
-    description = 'Assembles a jar archive containing the Javadoc.';
-    dependsOn tasks.javadoc;
+    group = BasePlugin.BUILD_GROUP
+    description = 'Assembles a jar archive containing the Javadoc.'
+    dependsOn tasks.javadoc
 
-    from tasks.javadoc.destinationDir;
+    from tasks.javadoc.destinationDir
     into('META-INF') {
-        from 'LICENSE';
+        from 'LICENSE'
     }
-    classifier = 'javadoc';
+    archiveClassifier.set('javadoc')
 
     doFirst {
-        manifest = tasks.jar.manifest;
+        manifest = tasks.jar.manifest
         manifest {
-            attributes 'Build-Timestamp': project.ext.buildTimestamp.toString();
+            attributes 'Build-Timestamp': project.ext.buildTimestamp.toString()
         }
     }
 }
 
 
 artifacts {
-    archives jarSources;
-    archives jarJavadoc;
+    archives jarSources
+    archives jarJavadoc
 }
 
 
@@ -224,38 +227,38 @@ artifacts {
 publishing {
     repositories {
         maven {
-            url "$buildDir/repo";
+            url "$buildDir/repo"
         }
     }
     publications {
         mavenJava(MavenPublication) {
             from components.java
             artifact jarSources {
-                classifier 'sources';
+                classifier 'sources'
             }
             artifact jarJavadoc {
-                classifier 'javadoc';
+                classifier 'javadoc'
             }
             pom.withXml {
-                final Node rootNode = asNode();
-                rootNode.appendNode('name', project.name);
-                rootNode.appendNode('description', project.description);
-                rootNode.appendNode('url', project.ext.website);
-                rootNode.appendNode('inceptionYear', '2015');
+                final Node rootNode = asNode()
+                rootNode.appendNode('name', project.name)
+                rootNode.appendNode('description', project.description)
+                rootNode.appendNode('url', (String) project.ext.website)
+                rootNode.appendNode('inceptionYear', '2015')
 
-                Node n = rootNode.appendNode('licenses').appendNode('license');
-                n.appendNode('name', 'Apache License 2.0');
-                n.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0');
+                Node n = rootNode.appendNode('licenses').appendNode('license')
+                n.appendNode('name', 'Apache License 2.0')
+                n.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0')
 
-                n = rootNode.appendNode('developers').appendNode('developer');
-                n.appendNode('name', project.ext.vendorName);
-                n.appendNode('email', project.ext.email);
+                n = rootNode.appendNode('developers').appendNode('developer')
+                n.appendNode('name', (String) project.ext.vendorName)
+                n.appendNode('email', (String) project.ext.email)
 
-                final String gh = 'git@github.com:' + (String) project.ext.github + '.git';
-                n = rootNode.appendNode('scm');
-                n.appendNode('connection', 'scm:git:' + gh);
-                n.appendNode('developerConnection', 'scm:git:' + gh);
-                n.appendNode('url', gh);
+                final String gh = 'git@github.com:' + (String) project.ext.github + '.git'
+                n = rootNode.appendNode('scm')
+                n.appendNode('connection', 'scm:git:' + gh)
+                n.appendNode('developerConnection', 'scm:git:' + gh)
+                n.appendNode('url', gh)
             }
         }
     }
@@ -263,14 +266,14 @@ publishing {
 
 
 private String readPropertyValue(final String pPropName) {
-    String result = System.getenv(pPropName);
+    String result = System.getenv(pPropName)
     if (project.hasProperty(pPropName)) {
-        result = (String) project.property(pPropName);
+        result = (String) project.property(pPropName)
     }
     if (result == null) {
-        throw new GradleException("Required system or project property not found: " + pPropName);
+        throw new GradleException("Required system or project property not found: " + pPropName)
     }
-    return result;
+    return result
 }
 
 
@@ -280,7 +283,7 @@ task checkPublishProperties {
             final String prp ->
                 if (!project.hasProperty(prp)) {
                     throw new GradleException("Could not find property \'${prp}\'. " +
-                        'Did you forget to specify it in ~/.gradle/gradle.properties?');
+                        'Did you forget to specify it in ~/.gradle/gradle.properties?')
                 }
         }
     }
@@ -291,38 +294,38 @@ bintray {
         && project.hasProperty('bintray.gpg.passphrase') && project.hasProperty('sonatype.user')
         && project.hasProperty('sonatype.password'))
     {
-        user = project.property('bintray.user');
-        key = project.property('bintray.apikey');
+        user = project.property('bintray.user')
+        key = project.property('bintray.apikey')
 
-        publications = ['mavenJava'];
-        publish = true;
-        dryRun = true;   // comment out for actual release deployment
+        publications = ['mavenJava']
+        publish = true
+        dryRun = true   // comment out for actual release deployment
         pkg {
-            repo = 'maven';
-            name = project.name;
-            desc = project.description;
-            websiteUrl = project.ext.website;
-            issueTrackerUrl = project.ext.issueTrackerUrl;
-            vcsUrl = "https://github.com/${project.ext.github}.git";
-            githubRepo = project.ext.github;
-            licenses = ['Apache-2.0'];
-            publicDownloadNumbers = true;
+            repo = 'maven'
+            name = project.name
+            desc = project.description
+            websiteUrl = project.ext.website
+            issueTrackerUrl = project.ext.issueTrackerUrl
+            vcsUrl = "https://github.com/${project.ext.github}.git"
+            githubRepo = project.ext.github
+            licenses = ['Apache-2.0']
+            publicDownloadNumbers = true
             version {
-                name = project.version;  // Bintray logical version name
-                desc = project.description;
-                released = (Date) project.ext.buildTimestamp;
-                vcsTag = 'v' + project.version;
+                name = project.version  // Bintray logical version name
+                desc = project.description
+                released = (Date) project.ext.buildTimestamp
+                vcsTag = 'v' + project.version
                 gpg {
-                    sign = true;
-                    passphrase = project.property('bintray.gpg.passphrase');
+                    sign = true
+                    passphrase = project.property('bintray.gpg.passphrase')
                 }
                 mavenCentralSync {
-                    sync = true;
-                    user = project.property('sonatype.user');
-                    password = project.property('sonatype.password');
+                    sync = true
+                    user = project.property('sonatype.user')
+                    password = project.property('sonatype.password')
                 }
             }
         }
     }
 }
-tasks['bintrayUpload'].dependsOn('checkPublishProperties');
+tasks['bintrayUpload'].dependsOn('checkPublishProperties')
