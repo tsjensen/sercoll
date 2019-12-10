@@ -16,6 +16,7 @@ buildscript {
         jcenter()
     }
 }
+
 plugins {
     id 'java-library'
     id 'idea'
@@ -23,6 +24,7 @@ plugins {
     id 'maven-publish'
     id 'com.jfrog.bintray' version '1.8.0'
 }
+
 repositories {
     jcenter()
 }
@@ -65,10 +67,14 @@ dependencies {
     testImplementation group: 'commons-io', name: 'commons-io', version: '2.4'
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_6
+    withJavadocJar()
+    withSourcesJar()
+}
+
 
 tasks.withType(JavaCompile) {
-    sourceCompatibility = JavaVersion.VERSION_1_6
-    targetCompatibility = JavaVersion.VERSION_1_6
     options.encoding = 'UTF-8'
     options.deprecation = true
     options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
@@ -79,6 +85,7 @@ tasks.withType(JavaCompile) {
 test {
     executable = readPropertyValue('sercoll_jdk6_java')
 }
+
 
 /*
  * - - - - - - - - - - - - - - -  INTELLIJ IDE CONFIG  - - - - - - - - - - - - - - -
@@ -96,7 +103,6 @@ idea.module {
 }
 
 
-
 /*
  * - - - - - - - - - - - - - - -  CHECKSTYLE  - - - - - - - - - - - - - - -
  */
@@ -110,7 +116,6 @@ checkstyle {
 tasks.withType(Checkstyle).each {
     it.setGroup(LifecycleBasePlugin.VERIFICATION_GROUP)
 }
-
 
 
 /*
@@ -143,14 +148,11 @@ javadoc {
 }
 
 
-
 /*
  * - - - - - - - - - - - - - - -  ARTIFACTS  - - - - - - - - - - - - - - -
  */
 jar {
-    into('META-INF') {
-        from 'LICENSE'
-    }
+    from 'LICENSE'
     manifest {
         attributes = ['Manifest-Version'        : '1.0',
                       'Specification-Title'     : project.name,
@@ -176,16 +178,8 @@ jar {
 }
 
 
-task jarSources(type: Jar) {
-    group = BasePlugin.BUILD_GROUP
-    description = 'Assembles a jar archive containing the source files.'
-
-    from sourceSets.main.allJava
-    into('META-INF') {
-        from 'LICENSE'
-    }
-    archiveClassifier.set('sources')
-
+sourcesJar {
+    from 'LICENSE'
     doFirst {
         manifest = tasks.jar.manifest
         manifest {
@@ -195,29 +189,16 @@ task jarSources(type: Jar) {
 }
 
 
-task jarJavadoc(type: Jar) {
-    group = BasePlugin.BUILD_GROUP
-    description = 'Assembles a jar archive containing the Javadoc.'
-    dependsOn tasks.javadoc
-
-    from tasks.javadoc.destinationDir
+javadocJar {
     into('META-INF') {
         from 'LICENSE'
     }
-    archiveClassifier.set('javadoc')
-
     doFirst {
         manifest = tasks.jar.manifest
         manifest {
             attributes 'Build-Timestamp': project.ext.buildTimestamp.toString()
         }
     }
-}
-
-
-artifacts {
-    archives jarSources
-    archives jarJavadoc
 }
 
 
@@ -227,18 +208,13 @@ artifacts {
 publishing {
     repositories {
         maven {
+            name 'localBuildDir'
             url "$buildDir/repo"
         }
     }
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            artifact jarSources {
-                classifier 'sources'
-            }
-            artifact jarJavadoc {
-                classifier 'javadoc'
-            }
             pom.withXml {
                 final Node rootNode = asNode()
                 rootNode.appendNode('name', project.name)
