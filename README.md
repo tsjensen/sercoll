@@ -1,6 +1,8 @@
-[![Build Status](https://travis-ci.org/tsjensen/sercoll.svg?branch=master)](https://travis-ci.org/tsjensen/sercoll)
+[![Build Status](https://github.com/tsjensen/sercoll/actions/workflows/build.yml/badge.svg)](https://github.com/tsjensen/sercoll/actions/workflows/build.yml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.thomasjensen.sercoll/sercoll/badge.svg)](http://search.maven.org/#search%7Cgav%7C1%7Cg%3Acom.thomasjensen.sercoll)
+
 # sercoll
+
 **Java Collections declared Serializable**
 
 This Java library provides one way to deal with the problem that Java collection interfaces are not declared serializable. Without *sercoll*, the following code will cause the FindBugs warning `Non-transient non-serializable instance field in serializable class` ([SE_BAD_FIELD](http://findbugs.sourceforge.net/bugDescriptions.html#SE_BAD_FIELD)):
