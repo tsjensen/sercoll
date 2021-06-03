@@ -1,18 +1,13 @@
-# Java
-*.class
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
 # Gradle build directory
-.gradle/
-build/
+/.gradle/
+/build/
+/out/
 
 # IntelliJ IDEA control files
 *.iws
 *.iml
 *.ipr
-.idea/
+/.idea/
 
 # Netbeans control files
 nbactions.xml
@@ -21,7 +16,7 @@ nb-configuration.xml
 # Eclipse control files
 .classpath
 .project
-.settings/
+/.settings/
 
 # Windows specific control files
 Thumbs.db
@@ -29,8 +24,5 @@ Desktop.ini
 
 # Others
 *.zip
-bin/
-_support/
-delme/
-out/
+/_support/
 *~

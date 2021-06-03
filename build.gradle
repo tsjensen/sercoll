@@ -13,7 +13,7 @@
  */
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
     }
 }
 
@@ -26,7 +26,7 @@ plugins {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 
@@ -40,7 +40,10 @@ import org.gradle.util.GradleVersion
 group = 'com.thomasjensen.sercoll'
 description = 'Java Collections declared Serializable'
 version = '1.0.0-SNAPSHOT'
-println 'Building version ' + project.version
+
+gradle.taskGraph.whenReady {
+    logger.lifecycle('Building version ' + project.version)
+}
 
 ext {
     vendorName = 'Thomas Jensen'
@@ -62,7 +65,7 @@ dependencies {
 
     testCompileOnly group: 'com.google.code.findbugs', name: 'annotations', version: '2.0.3'
     testCompileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '2.0.3'
-    testImplementation group: 'junit', name: 'junit', version: '4.11'
+    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
     testImplementation group: 'org.assertj', name: 'assertj-core', version: '1.+'
     testImplementation group: 'commons-io', name: 'commons-io', version: '2.4'
 }
@@ -92,8 +95,6 @@ test {
  */
 idea.project {
     languageLevel = JavaVersion.VERSION_1_6
-    // TODO set file encoding to UTF-8
-    // example: http://mrhaki.blogspot.de/2012/09/gradle-goodness-customize-idea-project.html
 }
 idea.module {
     downloadSources = true
@@ -215,26 +216,29 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            pom.withXml {
-                final Node rootNode = asNode()
-                rootNode.appendNode('name', project.name)
-                rootNode.appendNode('description', project.description)
-                rootNode.appendNode('url', (String) project.ext.website)
-                rootNode.appendNode('inceptionYear', '2015')
-
-                Node n = rootNode.appendNode('licenses').appendNode('license')
-                n.appendNode('name', 'Apache License 2.0')
-                n.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0')
-
-                n = rootNode.appendNode('developers').appendNode('developer')
-                n.appendNode('name', (String) project.ext.vendorName)
-                n.appendNode('email', (String) project.ext.email)
-
+            pom {
+                name = (String) project.name
+                description = project.description
+                url = project.ext.website
+                inceptionYear = '2015'
+                licenses {
+                    license {
+                        name = 'Apache License 2.0'
+                        url = "https://raw.githubusercontent.com/tsjensen/sercoll/v${project.version}/LICENSE"
+                    }
+                }
+                developers {
+                    developer {
+                        name = project.ext.vendorName
+                        email = project.ext.email
+                    }
+                }
                 final String gh = 'git@github.com:' + (String) project.ext.github + '.git'
-                n = rootNode.appendNode('scm')
-                n.appendNode('connection', 'scm:git:' + gh)
-                n.appendNode('developerConnection', 'scm:git:' + gh)
-                n.appendNode('url', gh)
+                scm {
+                    connection = 'scm:git:' + gh
+                    developerConnection = 'scm:git:' + gh
+                    url = gh
+                }
             }
         }
     }
